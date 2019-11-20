@@ -1,9 +1,8 @@
-import graphene
 from django.contrib.auth import get_user_model
 from graphene import Field, List, String
 from graphene_django import DjangoObjectType
 
-from .settings import graphql_settings
+from .settings import tenc_graphene_settings
 
 user_model = get_user_model()
 
@@ -11,6 +10,7 @@ user_model = get_user_model()
 class UserType(DjangoObjectType):
     class Meta:
         model = user_model
+        exclude = tenc_graphene_settings.DEFAULT_USER_EXCLUDE
 
 
 class UsersQuery(object):
@@ -24,9 +24,9 @@ class UsersQuery(object):
         return user_model.objects.all()
 
 
-if graphql_settings.DEFAULT_USER_TYPE:
-    class TencQuery(UsersQuery):
+if tenc_graphene_settings.DEFAULT_USER_TYPE:
+    class TencGrapheneQuery(UsersQuery):
         pass
 else:
-    class TencQuery(object):
+    class TencGrapheneQuery(object):
         pass
