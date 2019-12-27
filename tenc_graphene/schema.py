@@ -1,5 +1,6 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
-from graphene import Field, List, String
+from graphene import Field, List, String, ObjectType, Boolean
 from graphene_django import DjangoObjectType
 
 from .settings import tenc_graphene_settings
@@ -24,9 +25,32 @@ class UsersQuery(object):
         return user_model.objects.all()
 
 
+class DjangoSettingsType(ObjectType):
+    debug = Boolean()
+    timezone = String()
+
+    def resolve_debug(self, info, **kwargs):
+        return getattr(settings, 'DEBUG', False)
+
+    def resolve_timezone(self, info, **kwargs):
+        return getattr(settings, 'TIME_ZONE', 'n/a')
+
+
+class DjangoSettingsQuery(object):
+    django_settings = Field(type=DjangoSettingsType)
+
+    def resolve_django_settings(self, info, **kwargs):
+        return DjangoSettingsType()
+
+
 if tenc_graphene_settings.DEFAULT_USER_TYPE:
-    class TencGrapheneQuery(UsersQuery):
+    class TencGrapheneQuery(
+        DjangoSettingsQuery,
+        UsersQuery,
+    ):
         pass
 else:
-    class TencGrapheneQuery(object):
+    class TencGrapheneQuery(
+        DjangoSettingsQuery,
+    ):
         pass
