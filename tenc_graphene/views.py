@@ -5,7 +5,7 @@ from .settings import tenc_graphene_settings
 
 
 class TencGrapheneView(AccessMixin, GraphQLView):
-        def dispatch(self, request, *args, **kwargs):
-            if tenc_graphene_settings.PROTECTED_URL and not request.user.is_authenticated:
-                return self.handle_no_permission()
-            return super().dispatch(request, *args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if tenc_graphene_settings.PROTECTED_URL and not request.user.is_authenticated:
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
