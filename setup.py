@@ -8,7 +8,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
-    name='django-graphql',
+    name='django-tenc-graphene',
     version='0.5',
     license='BSD 3-Clause License',
     description='Django app adding Django-Graphene with some initial work and easy configuration.',
